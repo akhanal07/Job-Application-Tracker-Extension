@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Job Application Tracker",
+  "version": "1.4",
+  "description": "A simple extension to track job applications with status and date.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

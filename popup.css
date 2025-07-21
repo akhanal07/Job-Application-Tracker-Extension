@@ -1,0 +1,273 @@
+/* --- General & Body Styles --- */
+body {
+    font-family: 'Inter', sans-serif;
+    width: 380px;
+    background-color: #111827; /* Dark Gray */
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 24px;
+}
+
+/* --- Profile Section --- */
+.profile-section {
+    background-color: #1f2937;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    border: 1px solid #374151;
+}
+.profile-selector-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.profile-selector-wrapper label {
+    font-weight: 500;
+    color: #d1d5db;
+    margin-bottom: 0;
+}
+.profile-selector-wrapper select {
+    flex-grow: 1;
+}
+.add-profile-wrapper {
+    display: flex;
+    gap: 8px;
+}
+.add-profile-wrapper input {
+    flex-grow: 1;
+}
+.add-profile-wrapper button {
+    padding: 8px 14px;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1f2937; /* Darker Gray */
+}
+::-webkit-scrollbar-thumb {
+    background: #4f46e5; /* Indigo */
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #4338ca; /* Darker Indigo */
+}
+
+/* --- Header (No longer used, but kept for potential future use) --- */
+.header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.header h1 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 700;
+    margin: 0;
+}
+.header p {
+    font-size: 0.875rem; /* 14px */
+    color: #9ca3af; /* Lighter Gray */
+    margin-top: 4px;
+}
+
+/* --- Form Card & Inputs --- */
+.form-card {
+    background-color: #1f2937; /* Darker Gray */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #374151;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500;
+    color: #d1d5db; /* Light Gray */
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: #111827; /* Dark Gray */
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem; /* 16px */
+    box-sizing: border-box; /* Important for padding */
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: 'Inter', sans-serif; /* Ensure font consistency */
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #4f46e5; /* Indigo */
+    box-shadow: 0 0 0 2px #4f46e560;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* --- Buttons --- */
+.button-container {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.action-button {
+    width: 100%;
+    background-image: linear-gradient(to right, #4f46e5, #8b5cf6);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.action-button:hover {
+    opacity: 0.9;
+}
+
+.secondary-button {
+    width: 100%;
+    background-color: #374151;
+    color: #d1d5db;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.secondary-button:hover {
+    background-color: #4b5563;
+}
+
+/* --- Job List --- */
+.list-container h2 {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.job-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 256px;
+    overflow-y: auto;
+    padding-right: 8px; /* Space for scrollbar */
+}
+
+.job-item {
+    background-color: #1f2937;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+}
+.job-item:hover {
+    border-color: #4f46e5;
+}
+
+.job-item-details {
+    flex-grow: 1;
+    min-width: 0; /* Prevents long text from pushing actions out */
+}
+
+.job-item-info a {
+    font-weight: 600;
+    color: #818cf8; /* Light Indigo */
+    text-decoration: none;
+    word-break: break-all;
+}
+.job-item-info a:hover {
+    text-decoration: underline;
+}
+
+.job-item-info p {
+    font-size: 0.75rem; /* 12px */
+    color: #9ca3af;
+    margin: 4px 0 0 0;
+}
+
+.job-item-notes {
+    font-size: 0.875rem; /* 14px */
+    color: #d1d5db;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #374151;
+    white-space: pre-wrap; /* Preserves line breaks in notes */
+    word-break: break-word;
+}
+
+.job-item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 16px;
+    flex-shrink: 0;
+}
+
+.action-icon-button {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 4px;
+}
+.action-icon-button:hover {
+    color: #ef4444; /* Red for delete */
+}
+.action-icon-button.edit-btn:hover {
+    color: #818cf8; /* Indigo for edit */
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    margin-top: 8px;
+    display: inline-block;
+}
