@@ -29,7 +29,7 @@
 
         <!-- Form Section -->
         <div class="form-card">
-            <input type="hidden" id="editingId"> <!-- Hidden field to store ID of item being edited -->
+            <input type="hidden" id="editingId">
             <div class="form-group">
                 <label for="companyName">Company Name</label>
                 <input type="text" id="companyName" placeholder="e.g., Google">
@@ -69,7 +69,12 @@
 
         <!-- Saved Applications List -->
         <div class="list-container">
-            <h2 id="listHeader">Saved Applications</h2>
+            <div class="list-header-controls">
+                 <h2 id="listHeader">Saved Applications</h2>
+                 <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                 </div>
+            </div>
             <ul id="applicationsList" class="job-list">
                 <!-- Job applications will be dynamically inserted here -->
             </ul>

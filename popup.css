@@ -63,22 +63,6 @@ body {
     background: #4338ca; /* Darker Indigo */
 }
 
-/* --- Header (No longer used, but kept for potential future use) --- */
-.header {
-    text-align: center;
-    margin-bottom: 24px;
-}
-.header h1 {
-    font-size: 1.5rem; /* 24px */
-    font-weight: 700;
-    margin: 0;
-}
-.header p {
-    font-size: 0.875rem; /* 14px */
-    color: #9ca3af; /* Lighter Gray */
-    margin-top: 4px;
-}
-
 /* --- Form Card & Inputs --- */
 .form-card {
     background-color: #1f2937; /* Darker Gray */
@@ -179,12 +163,33 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background-color: #4b5563;
 }
 
-/* --- Job List --- */
-.list-container h2 {
-    font-size: 1.125rem; /* 18px */
-    font-weight: 600;
+/* --- Job List & Search --- */
+.list-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 12px;
 }
+.list-header-controls h2 {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+    margin: 0;
+}
+.search-container input {
+    width: 120px; /* Adjust width as needed */
+    padding: 8px 12px;
+    background-color: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+.search-container input:focus {
+    width: 150px; /* Expand on focus */
+}
+
 .job-list {
     list-style: none;
     padding: 0;

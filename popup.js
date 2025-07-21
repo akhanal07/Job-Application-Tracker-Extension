@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const addProfileButton = document.getElementById('addProfileButton');
     const deleteProfileButton = document.getElementById('deleteProfileButton');
     const listHeader = document.getElementById('listHeader');
+    const searchInput = document.getElementById('searchInput'); // New search input
     
     const companyNameInput = document.getElementById('companyName');
     const applicationLinkInput = document.getElementById('applicationLink');
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     deleteProfileButton.addEventListener('click', handleDeleteProfile);
     saveButton.addEventListener('click', handleSaveApplication);
     cancelEditButton.addEventListener('click', exitEditMode);
+    searchInput.addEventListener('input', triggerListReload); // New search listener
 
     // --- Functions ---
 
@@ -44,13 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
             let allData = data[DATA_KEY] || {};
             let currentProfile = data[PROFILE_KEY];
 
-            // If no data exists, create a default profile
             if (Object.keys(allData).length === 0) {
                 allData = { 'Default': [] };
                 currentProfile = 'Default';
                 chrome.storage.local.set({ [DATA_KEY]: allData, [PROFILE_KEY]: currentProfile });
             } else if (!currentProfile || !allData[currentProfile]) {
-                // If current profile is invalid, switch to the first available one
                 currentProfile = Object.keys(allData)[0];
                 chrome.storage.local.set({ [PROFILE_KEY]: currentProfile });
             }
@@ -76,11 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleProfileChange() {
         const newProfile = profileSelector.value;
-        chrome.storage.local.set({ [PROFILE_KEY]: newProfile }, () => {
-             chrome.storage.local.get(DATA_KEY, (data) => {
-                loadApplicationsForProfile(newProfile, data[DATA_KEY]);
-             });
-        });
+        searchInput.value = ''; // Clear search when changing profiles
+        chrome.storage.local.set({ [PROFILE_KEY]: newProfile }, triggerListReload);
     }
     
     function handleAddProfile() {
@@ -118,12 +115,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function triggerListReload() {
+        chrome.storage.local.get([DATA_KEY, PROFILE_KEY], (data) => {
+            loadApplicationsForProfile(data[PROFILE_KEY], data[DATA_KEY]);
+        });
+    }
+
     function loadApplicationsForProfile(profileName, allData) {
         listHeader.textContent = `Applications for ${profileName}`;
-        const applications = allData[profileName] || [];
+        let applications = allData[profileName] || [];
+        
+        // Filter logic based on search input
+        const searchTerm = searchInput.value.toLowerCase();
+        if (searchTerm) {
+            applications = applications.filter(app => 
+                app.company.toLowerCase().includes(searchTerm) ||
+                (app.notes || '').toLowerCase().includes(searchTerm)
+            );
+        }
+        
         applicationsList.innerHTML = '';
         if (applications.length === 0) {
-            applicationsList.innerHTML = '<li style="text-align: center; color: #9ca3af; padding: 16px;">No applications saved for this profile.</li>';
+            const message = searchTerm ? 'No applications match your search.' : 'No applications saved for this profile.';
+            applicationsList.innerHTML = `<li style="text-align: center; color: #9ca3af; padding: 16px;">${message}</li>`;
             return;
         }
         applications.forEach(createApplicationListItem);
@@ -142,23 +156,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const appData = getFormData();
         if (!appData.company || !appData.link || !appData.date) return;
         
-        const currentProfile = profileSelector.value;
         appData.id = Date.now();
+        updateStorageWithNewApp(appData);
+    }
+    
+    function updateApplication(id) {
+        const updatedData = getFormData();
+        updateStorageWithEditedApp(id, updatedData);
+    }
 
+    function updateStorageWithNewApp(appData) {
+        const currentProfile = profileSelector.value;
         chrome.storage.local.get(DATA_KEY, function(data) {
             let allData = data[DATA_KEY];
             allData[currentProfile].unshift(appData);
             chrome.storage.local.set({ [DATA_KEY]: allData }, () => {
                 resetForm();
-                loadApplicationsForProfile(currentProfile, allData);
+                triggerListReload();
             });
         });
     }
-    
-    function updateApplication(id) {
-        const updatedData = getFormData();
-        const currentProfile = profileSelector.value;
 
+    function updateStorageWithEditedApp(id, updatedData) {
+        const currentProfile = profileSelector.value;
         chrome.storage.local.get(DATA_KEY, function(data) {
             let allData = data[DATA_KEY];
             allData[currentProfile] = allData[currentProfile].map(app => 
@@ -166,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
             );
             chrome.storage.local.set({ [DATA_KEY]: allData }, () => {
                 exitEditMode();
-                loadApplicationsForProfile(currentProfile, allData);
+                triggerListReload();
             });
         });
     }
@@ -176,13 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.storage.local.get(DATA_KEY, function(data) {
             let allData = data[DATA_KEY];
             allData[currentProfile] = allData[currentProfile].filter(app => app.id !== id);
-             chrome.storage.local.set({ [DATA_KEY]: allData }, () => {
-                loadApplicationsForProfile(currentProfile, allData);
-            });
+             chrome.storage.local.set({ [DATA_KEY]: allData }, triggerListReload);
         });
     }
     
-    // --- UI Helper Functions (Edit Mode, Form Reset, etc.) ---
+    // --- UI Helper Functions ---
 
     function getFormData() {
         return {
